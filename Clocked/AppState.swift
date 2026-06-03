@@ -22,6 +22,9 @@ class AppState: ObservableObject {
     // Incremented each second so views that display elapsed time redraw automatically.
     @Published var tick: Date = Date()
 
+    // Pending session note — set when a timer stops, cleared when the note window is dismissed.
+    @Published var pendingEntry: TimeEntry? = nil
+
     // Settings
     @Published var menubarDisplay: MenubarDisplay = .time {
         didSet { saveSettings() }
@@ -112,16 +115,77 @@ class AppState: ObservableObject {
         saveProjects()
     }
 
+    func saveNoteForPendingEntry(_ note: String) {
+        guard var entry = pendingEntry else { return }
+        entry.note = note
+        if let idx = projects.firstIndex(where: { $0.name == entry.projectName }) {
+            projects[idx].entries.append(entry)
+            saveProjects()
+        }
+        pendingEntry = nil
+    }
+
+    func skipNoteForPendingEntry() {
+        guard let entry = pendingEntry else { return }
+        if let idx = projects.firstIndex(where: { $0.name == entry.projectName }) {
+            projects[idx].entries.append(entry)
+            saveProjects()
+        }
+        pendingEntry = nil
+    }
+
+    func deleteEntry(_ entry: TimeEntry, from project: Project) {
+        guard let pIdx = projects.firstIndex(where: { $0.id == project.id }) else { return }
+        projects[pIdx].entries.removeAll { $0.id == entry.id }
+        saveProjects()
+    }
+
+    func exportAllEntriesAsMarkdown() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        let timeFormatter = DateFormatter()
+        timeFormatter.timeStyle = .short
+
+        var lines = ["# Clocked — Session Log", ""]
+        for project in projects where !project.entries.isEmpty {
+            lines.append("## \(project.name)")
+            let sorted = project.entries.sorted { $0.startDate > $1.startDate }
+            for entry in sorted {
+                let date = dateFormatter.string(from: entry.startDate)
+                let start = timeFormatter.string(from: entry.startDate)
+                let end = timeFormatter.string(from: entry.endDate)
+                let dur = formatDurationShort(entry.seconds)
+                let note = entry.note.isEmpty ? "(no note)" : entry.note
+                lines.append("- \(date) \(start)–\(end) (\(dur)): \(note)")
+            }
+            lines.append("")
+        }
+        return lines.joined(separator: "\n")
+    }
+
     private func commitActiveTimer() {
         guard let id = activeProjectId, let start = timerStartDate else { return }
-        let elapsed = Int(Date().timeIntervalSince(start))
+        let end = Date()
+        let elapsed = Int(end.timeIntervalSince(start))
+        var projectName = ""
         if let idx = projects.firstIndex(where: { $0.id == id }) {
             projects[idx].totalSeconds += elapsed
+            projectName = projects[idx].name
         }
         activeProjectId = nil
         timerStartDate = nil
         saveProjects()
         saveTimerState()
+
+        // Create a pending entry so the note window can appear
+        if elapsed > 0 {
+            pendingEntry = TimeEntry(
+                projectName: projectName,
+                startDate: start,
+                endDate: end,
+                seconds: elapsed
+            )
+        }
     }
 
     // MARK: - Persistence

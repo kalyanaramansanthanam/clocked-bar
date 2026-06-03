@@ -9,6 +9,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem!
     private var popover: NSPopover!
     private var cancellables = Set<AnyCancellable>()
+    private var sessionNoteController: SessionNoteWindowController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Hide from Dock and app switcher — menubar only.
@@ -16,6 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         setupStatusItem()
         setupPopover()
         observeTimer()
+        observePendingEntry()
     }
 
     // MARK: - Setup
@@ -90,6 +92,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     // MARK: - Popover toggle
+
+    private func observePendingEntry() {
+        appState.$pendingEntry
+            .receive(on: RunLoop.main)
+            .sink { [weak self] entry in
+                guard let self, entry != nil else { return }
+                if self.sessionNoteController == nil {
+                    self.sessionNoteController = SessionNoteWindowController(appState: self.appState)
+                }
+                // Close the popover so it doesn't compete for focus
+                self.popover.performClose(nil)
+                self.sessionNoteController?.showWindow()
+            }
+            .store(in: &cancellables)
+    }
 
     @objc private func togglePopover() {
         guard let button = statusItem.button else { return }

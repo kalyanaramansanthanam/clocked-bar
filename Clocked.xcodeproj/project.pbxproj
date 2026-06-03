@@ -18,6 +18,8 @@
 		AAF39986092CC0549E64A408 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB547299863567F451B4AC7 /* AppState.swift */; };
 		DFB15503C2C54903DB91525A /* MenuBarLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01F16DDAB98D32BB37537E0 /* MenuBarLabel.swift */; };
 		E0C38AF2C5AC78FC8E315D5E /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395FA0FB10F9865BADB68E24 /* Project.swift */; };
+		A1B2C3D4E5F60718A9B0C1D2 /* SessionNoteWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718A9B0C1D3 /* SessionNoteWindow.swift */; };
+		A1B2C3D4E5F60718A9B0C1D4 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718A9B0C1D5 /* HistoryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		E37405D172D3A56EA4D9C163 /* EditProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProjectsView.swift; sourceTree = "<group>"; };
 		F01F16DDAB98D32BB37537E0 /* MenuBarLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarLabel.swift; sourceTree = "<group>"; };
 		FE4C388B181AABB0A942DA6E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718A9B0C1D3 /* SessionNoteWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionNoteWindow.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718A9B0C1D5 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -75,6 +79,8 @@
 				F01F16DDAB98D32BB37537E0 /* MenuBarLabel.swift */,
 				334826076460E248AB302922 /* MenuBarView.swift */,
 				6A33705DAD5A85A47EBAA914 /* ProjectRowView.swift */,
+				A1B2C3D4E5F60718A9B0C1D3 /* SessionNoteWindow.swift */,
+				A1B2C3D4E5F60718A9B0C1D5 /* HistoryView.swift */,
 				D498BDD49005CFAF3A67C601 /* SettingsView.swift */,
 			);
 			path = Views;
@@ -157,6 +163,8 @@
 				0A08937B69ADC647D11D1A46 /* MenuBarView.swift in Sources */,
 				E0C38AF2C5AC78FC8E315D5E /* Project.swift in Sources */,
 				6B8B4189D454876E1A7FFDAF /* ProjectRowView.swift in Sources */,
+				A1B2C3D4E5F60718A9B0C1D2 /* SessionNoteWindow.swift in Sources */,
+				A1B2C3D4E5F60718A9B0C1D4 /* HistoryView.swift in Sources */,
 				3D8FE526755E28D0B450F274 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

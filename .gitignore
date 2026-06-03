@@ -3,3 +3,4 @@ Hours.app/
 *.o
 *.d
 .DS_Store
+.build/

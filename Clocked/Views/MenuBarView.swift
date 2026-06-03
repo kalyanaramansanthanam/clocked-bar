@@ -4,6 +4,7 @@ struct MenuBarView: View {
     @EnvironmentObject var appState: AppState
     @State private var showingEditProjects = false
     @State private var showingSettings = false
+    @State private var showingHistory = false
     @State private var isAddingProject = false
     @State private var newProjectName = ""
     @FocusState private var addFieldFocused: Bool
@@ -17,6 +18,9 @@ struct MenuBarView: View {
         } else if showingSettings {
             SettingsView(onDone: { showingSettings = false })
                 .environmentObject(appState)
+        } else if showingHistory {
+            HistoryView(onDone: { showingHistory = false })
+                .environmentObject(appState)
         } else {
             mainView
         }
@@ -29,6 +33,13 @@ struct MenuBarView: View {
                 Text("Hours")
                     .font(.headline)
                 Spacer()
+                Button {
+                    showingHistory = true
+                } label: {
+                    Image(systemName: "clock.arrow.circlepath")
+                }
+                .buttonStyle(.plain)
+                .help("Session history")
                 Button {
                     showingSettings = true
                 } label: {
